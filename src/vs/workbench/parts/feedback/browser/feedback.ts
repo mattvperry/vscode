@@ -160,7 +160,9 @@ export class FeedbackDropdown extends Dropdown {
 		})
 			.text(this.feedback).attr('required', 'required')
 			.on('keyup', () => {
-				$charCounter.text('(' + (FeedbackDropdown.MAX_FEEDBACK_CHARS - this.feedbackDescriptionInput.value.length) + ' ' + nls.localize("characters left", "characters left") + ')');
+				let content = this.feedbackDescriptionInput.value;
+				let remainingChars = FeedbackDropdown.MAX_FEEDBACK_CHARS - content.length - (content.match(/(\r\n|\n|\r)/g) || []).length;
+				$charCounter.text('(' + remainingChars + ' ' + nls.localize("characters left", "characters left") + ')');
 				this.feedbackDescriptionInput.value ? this.sendButton.removeAttribute('disabled') : this.sendButton.attr('disabled', '');
 			})
 			.appendTo($form).domFocus().getHTMLElement();
